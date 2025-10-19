@@ -1,0 +1,49 @@
+.vacancy-page__container {
+  margin: 0 auto;
+  width: 650px;
+  list-style: none;
+}
+
+.vacancy-page__vacancy-card {
+  margin-bottom: 20px;
+
+  background-color: white;
+}
+
+.vacancy-page__vacancy-snippet {
+  padding: 24px;
+  border-radius: 12px;
+
+  text-align: left;
+
+  background-color: white;
+}
+
+.vacancy-page__logo-container {
+  width: 90px;
+  margin: 0 auto;
+  margin-bottom: 16px;
+}
+
+.vacancy-page__logo-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.vacancy-page__snippet-container {
+  margin-bottom: 16px;
+
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+
+.vacancy-page__snippet-title {
+  font-weight: 600;
+}
+
+.vacancy-page__snippet-title--company {
+  font-size: 20px;
+}
