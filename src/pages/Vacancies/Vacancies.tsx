@@ -12,7 +12,7 @@ import {
   selectArea,
   setCurrentPage,
 } from "../../app/redux/reducers/vacanciesSlice";
-import { VacanciesList, LoaderUI, NoResults } from "../../shared";
+import { TabsUI, VacanciesList, LoaderUI, NoResults } from "../../shared";
 import { SearchBar, SkillBox, AreaSelect, PaginationUI } from "../../widgets";
 
 import styles from "./Vacancies.module.css";
@@ -83,6 +83,8 @@ export const Vacancies = () => {
           <NoResults />
         ) : (
           <div className={styles["vacancies-field"]}>
+            <TabsUI />
+
             <VacanciesList items={vacancies} />
 
             <PaginationUI />
