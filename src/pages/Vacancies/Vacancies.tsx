@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams, useNavigate } from "react-router-dom";
 
 import {
   useTypedDispatch,
@@ -9,15 +9,17 @@ import { fetchVacancies } from "../../app/redux/reducers/VacanciesThunk";
 import {
   addSkill,
   inputSearchText,
-  selectArea,
   setCurrentPage,
 } from "../../app/redux/reducers/vacanciesSlice";
 import { TabsUI, VacanciesList, LoaderUI, NoResults } from "../../shared";
-import { SearchBar, SkillBox, AreaSelect, PaginationUI } from "../../widgets";
+import { SearchBar, SkillBox, PaginationUI } from "../../widgets";
 
 import styles from "./Vacancies.module.css";
 
 export const Vacancies = () => {
+  const { city } = useParams();
+  const navigate = useNavigate();
+
   const [searchParams] = useSearchParams();
 
   const dispatch = useTypedDispatch();
@@ -26,28 +28,22 @@ export const Vacancies = () => {
     (state) => state.vacanciesReducer.vacancies
   );
 
+  const areaFromState = useTypedSelector(
+    (state) => state.vacanciesReducer.currentArea
+  );
+
   const status = useTypedSelector((state) => state.vacanciesReducer.status);
 
-  function getArea(cityUrl: string | null) {
-    switch (cityUrl) {
-      case "Москва":
-        return "1";
-      case "Санкт-Петербург":
-        return "2";
-      default:
-        return null;
-    }
-  }
-
   useEffect(() => {
-    const city = searchParams.get("area");
-    const areaFromCity = city ? getArea(city) : null;
+    if (city !== "moscow" && city !== "petersburg") {
+      navigate("/not-found", { replace: false });
+    }
+
     const searchSkills = searchParams.get("skills") || "";
     const skillSet = searchSkills?.split(" AND ") || [];
     const pageParam = searchParams.get("page");
     const searchTextKeyword = searchParams.get("keyword") || "";
 
-    dispatch(selectArea(city));
     if (searchSkills) {
       skillSet.forEach((skill) => dispatch(addSkill(skill)));
     }
@@ -62,10 +58,10 @@ export const Vacancies = () => {
       fetchVacancies({
         page: Number(pageParam),
         text: searchQuery,
-        area: areaFromCity,
+        area: city === "moscow" || city === "petersburg" ? areaFromState : null,
       })
     );
-  }, [dispatch, searchParams]);
+  }, [areaFromState, city, dispatch, navigate, searchParams]);
 
   return (
     <>
@@ -74,7 +70,7 @@ export const Vacancies = () => {
         <div className={styles["search-params"]}>
           <SkillBox />
 
-          <AreaSelect />
+          {/* <AreaSelect /> */}
         </div>
 
         {status ? (

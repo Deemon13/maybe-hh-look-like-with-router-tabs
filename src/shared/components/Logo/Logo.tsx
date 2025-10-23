@@ -1,12 +1,21 @@
 import { Link } from "react-router-dom";
 
+import { useTypedDispatch } from "../../../app/redux/hooks/redux";
+import { selectArea } from "../../../app/redux/reducers/vacanciesSlice";
+
 import LogoIcon from "../../../app/assets/logo/logo.png";
 
 import styles from "./Logo.module.css";
 
 export const Logo = () => {
+  const dispatch = useTypedDispatch();
+
   return (
-    <Link to="/vacancies" className={styles["logo__link"]}>
+    <Link
+      to="/vacancies/moscow"
+      className={styles["logo__link"]}
+      onClick={() => dispatch(selectArea("Москва"))}
+    >
       <img
         className={styles["logo__icon"]}
         src={LogoIcon}

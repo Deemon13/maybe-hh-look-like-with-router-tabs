@@ -8,9 +8,9 @@ export const App = () => {
     <>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/vacancies" replace />} />
-          <Route path="vacancies" element={<Vacancies />} />
-          <Route path="vacancies/:id" element={<VacancyPage />} />
+          <Route index element={<Navigate to="vacancies" replace />} />
+          <Route path="vacancies/:city" element={<Vacancies />} />
+          <Route path="vacancies/:city/:id" element={<VacancyPage />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
