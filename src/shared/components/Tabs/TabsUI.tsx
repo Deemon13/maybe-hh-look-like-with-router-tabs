@@ -1,10 +1,7 @@
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useParams } from "react-router-dom";
 import { Tabs } from "@mantine/core";
 
-import {
-  useTypedDispatch,
-  useTypedSelector,
-} from "../../../app/redux/hooks/redux";
+import { useTypedDispatch } from "../../../app/redux/hooks/redux";
 import { selectArea } from "../../../app/redux/reducers/vacanciesSlice";
 
 import styles from "./Tabs.module.css";
@@ -12,23 +9,9 @@ import styles from "./Tabs.module.css";
 export const TabsUI = () => {
   const [, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { city } = useParams();
 
   const dispatch = useTypedDispatch();
-
-  const areaFromState = useTypedSelector(
-    (state) => state.vacanciesReducer.currentArea
-  );
-
-  const getCityValue = (area: string | null) => {
-    switch (area) {
-      case "1":
-        return "moscow";
-      case "2":
-        return "petersburg";
-      default:
-        return null;
-    }
-  };
 
   const handleClickOnTabCity = (e: string | null) => {
     if (e === "moscow") {
@@ -49,7 +32,7 @@ export const TabsUI = () => {
 
   return (
     <Tabs
-      defaultValue={getCityValue(areaFromState)}
+      defaultValue={city}
       classNames={{ list: styles.list }}
       onChange={handleClickOnTabCity}
     >

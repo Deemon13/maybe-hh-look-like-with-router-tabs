@@ -9,6 +9,7 @@ import { fetchVacancies } from "../../app/redux/reducers/VacanciesThunk";
 import {
   addSkill,
   inputSearchText,
+  selectArea,
   setCurrentPage,
 } from "../../app/redux/reducers/vacanciesSlice";
 import { TabsUI, VacanciesList, LoaderUI, NoResults } from "../../shared";
@@ -28,9 +29,27 @@ export const Vacancies = () => {
     (state) => state.vacanciesReducer.vacancies
   );
 
-  const areaFromState = useTypedSelector(
-    (state) => state.vacanciesReducer.currentArea
-  );
+  const areaFromParams = (cityParam: string) => {
+    switch (cityParam) {
+      case "moscow":
+        return "1";
+      case "petersburg":
+        return "2";
+      default:
+        return null;
+    }
+  };
+
+  const cityFromParams = (cityParam: string) => {
+    switch (cityParam) {
+      case "moscow":
+        return "Москва";
+      case "petersburg":
+        return "Санкт-Петербург";
+      default:
+        return null;
+    }
+  };
 
   const status = useTypedSelector((state) => state.vacanciesReducer.status);
 
@@ -49,6 +68,7 @@ export const Vacancies = () => {
     }
     dispatch(setCurrentPage(Number(pageParam)));
     dispatch(inputSearchText(searchTextKeyword));
+    if (city) dispatch(selectArea(cityFromParams(city)));
 
     const searchQuery = searchTextKeyword
       ? `${searchTextKeyword} AND ${searchSkills}`
@@ -58,10 +78,13 @@ export const Vacancies = () => {
       fetchVacancies({
         page: Number(pageParam),
         text: searchQuery,
-        area: city === "moscow" || city === "petersburg" ? areaFromState : null,
+        area:
+          city === "moscow" || city === "petersburg"
+            ? areaFromParams(city)
+            : null,
       })
     );
-  }, [areaFromState, city, dispatch, navigate, searchParams]);
+  }, [city, dispatch, navigate, searchParams]);
 
   return (
     <>
